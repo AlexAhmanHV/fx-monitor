@@ -421,6 +421,12 @@ export default function App() {
             European Central Bank (ECB)
           </a>
         </span>
+        <span>
+          {t.createdBy}:{' '}
+          <a href="https://alexahman.se" target="_blank" rel="noreferrer">
+            AlexAhman.se
+          </a>
+        </span>
       </footer>
     </main>
   );

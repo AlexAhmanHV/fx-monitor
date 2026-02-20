@@ -40,6 +40,7 @@ export type Translation = {
   regimeHigh: string;
   liveDemo: string;
   sourceCodeCta: string;
+  createdBy: string;
 };
 
 export const translations: Record<Locale, Translation> = {
@@ -84,6 +85,7 @@ export const translations: Record<Locale, Translation> = {
     regimeHigh: 'High',
     liveDemo: 'Live demo',
     sourceCodeCta: 'Source code',
+    createdBy: 'Created by',
   },
   sv: {
     projectPage: 'Projektsida',
@@ -126,5 +128,6 @@ export const translations: Record<Locale, Translation> = {
     regimeHigh: 'H\u00F6g',
     liveDemo: 'Live demo',
     sourceCodeCta: 'K\u00E4llkod',
+    createdBy: 'Skapad av',
   },
 };
