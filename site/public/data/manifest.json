@@ -1,0 +1,36 @@
+{
+    "source":  "ECB",
+    "generated_utc":  "2026-02-20T12:00:00Z",
+    "pairs":  [
+                  {
+                      "pair":  "EUR/SEK",
+                      "file":  "fx_EURSEK.json",
+                      "series_key":  "D.SEK.EUR.SP00.A"
+                  },
+                  {
+                      "pair":  "EUR/USD",
+                      "file":  "fx_EURUSD.json",
+                      "series_key":  "D.USD.EUR.SP00.A"
+                  },
+                  {
+                      "pair":  "EUR/GBP",
+                      "file":  "fx_EURGBP.json",
+                      "series_key":  "D.GBP.EUR.SP00.A"
+                  },
+                  {
+                      "pair":  "EUR/JPY",
+                      "file":  "fx_EURJPY.json",
+                      "series_key":  "D.JPY.EUR.SP00.A"
+                  },
+                  {
+                      "pair":  "EUR/NOK",
+                      "file":  "fx_EURNOK.json",
+                      "series_key":  "D.NOK.EUR.SP00.A"
+                  },
+                  {
+                      "pair":  "EUR/CHF",
+                      "file":  "fx_EURCHF.json",
+                      "series_key":  "D.CHF.EUR.SP00.A"
+                  }
+              ]
+}

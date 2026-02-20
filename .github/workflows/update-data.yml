@@ -1,0 +1,51 @@
+name: Update FX Data
+
+on:
+  schedule:
+    - cron: '30 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install pipeline dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r pipeline/requirements.txt
+
+      - name: Lint pipeline
+        run: |
+          ruff check pipeline
+
+      - name: Run pipeline tests
+        run: |
+          pytest pipeline/tests
+
+      - name: Fetch latest ECB FX data
+        run: |
+          python pipeline/fetch_fx.py --output-dir site/public/data --start-period 2015-01-01
+
+      - name: Commit and push if data changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add site/public/data/*.json
+          if git diff --staged --quiet; then
+            echo "No data changes to commit."
+          else
+            git commit -m "chore(data): update ECB FX data"
+            git push
+          fi
