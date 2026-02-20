@@ -75,6 +75,8 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
 
   const t = translations[locale];
+  const liveDemoUrl = import.meta.env.VITE_LIVE_DEMO_URL ?? window.location.origin;
+  const sourceCodeUrl = import.meta.env.VITE_SOURCE_CODE_URL ?? 'https://github.com/';
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -289,6 +291,14 @@ export default function App() {
           </div>
         </div>
         <p className="subtitle">{t.subtitle}</p>
+        <div className="hero-actions">
+          <a className="btn btn-primary" href={liveDemoUrl} target="_blank" rel="noreferrer">
+            {t.liveDemo}
+          </a>
+          <a className="btn btn-ghost" href={sourceCodeUrl} target="_blank" rel="noreferrer">
+            {t.sourceCodeCta}
+          </a>
+        </div>
       </section>
 
       <section className="controls card">

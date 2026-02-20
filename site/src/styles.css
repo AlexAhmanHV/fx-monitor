@@ -119,6 +119,40 @@ body {
   max-width: 70ch;
 }
 
+.hero-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 0.55rem 0.9rem;
+  text-decoration: none;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: transform 120ms ease, opacity 120ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #f4f9ff;
+}
+
+.btn-ghost {
+  background: var(--chip-bg);
+  border-color: var(--border);
+  color: var(--text);
+}
+
 .card,
 .chart-card,
 .kpi-card {

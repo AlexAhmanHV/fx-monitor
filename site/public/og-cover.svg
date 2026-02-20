@@ -1,0 +1,24 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="FX Monitor preview">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#071326"/>
+      <stop offset="100%" stop-color="#12345e"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#78f3da"/>
+      <stop offset="100%" stop-color="#5ab3ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1020" cy="120" r="210" fill="#5ab3ff" fill-opacity="0.17"/>
+  <circle cx="180" cy="60" r="150" fill="#78f3da" fill-opacity="0.14"/>
+
+  <text x="92" y="210" fill="#b4d2fb" font-size="26" font-family="Segoe UI, sans-serif" letter-spacing="2">PROJECT PAGE</text>
+  <text x="92" y="290" fill="#f2f8ff" font-size="74" font-weight="700" font-family="Segoe UI, sans-serif">FX Monitor</text>
+  <text x="92" y="344" fill="#c5daf9" font-size="33" font-family="Segoe UI, sans-serif">ECB reference rates dashboard</text>
+
+  <polyline points="90,468 220,450 340,470 470,420 610,438 760,396 900,420 1050,360" fill="none" stroke="url(#line)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="90" y="390" width="1020" height="150" rx="18" fill="#0f223f" fill-opacity="0.55" stroke="#88b6ef" stroke-opacity="0.28"/>
+  <text x="120" y="440" fill="#8bc5ff" font-size="24" font-family="Segoe UI, sans-serif">EUR/SEK   EUR/USD   EUR/GBP   EUR/JPY</text>
+  <text x="120" y="490" fill="#d9e9ff" font-size="28" font-family="Segoe UI, sans-serif">Interactive charts • KPI cards • Daily pipeline updates</text>
+</svg>
