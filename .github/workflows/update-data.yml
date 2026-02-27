@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: '30 4 * * *'
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'pipeline/**'
+      - '.github/workflows/update-data.yml'
 
 permissions:
   contents: write
@@ -28,11 +34,11 @@ jobs:
 
       - name: Lint pipeline
         run: |
-          ruff check pipeline
+          python -m ruff check pipeline
 
       - name: Run pipeline tests
         run: |
-          pytest pipeline/tests
+          python -m pytest pipeline/tests
 
       - name: Fetch latest ECB FX data
         run: |
