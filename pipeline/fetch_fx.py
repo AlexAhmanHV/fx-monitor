@@ -65,7 +65,9 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def fetch_csv_rows(client: requests.Session, pair_config: PairConfig, start_period: str) -> list[dict[str, str]]:
+def fetch_csv_rows(
+    client: requests.Session, pair_config: PairConfig, start_period: str
+) -> list[dict[str, str]]:
     params = {
         "startPeriod": start_period,
         "format": "csvdata",
@@ -83,9 +85,16 @@ def fetch_csv_rows(client: requests.Session, pair_config: PairConfig, start_peri
             return rows
         except (requests.RequestException, ValueError) as exc:
             if attempt == MAX_RETRIES:
-                raise RuntimeError(f"Failed to fetch {pair_config.pair} after {MAX_RETRIES} attempts") from exc
+                raise RuntimeError(
+                    f"Failed to fetch {pair_config.pair} after {MAX_RETRIES} attempts"
+                ) from exc
             sleep_seconds = RETRY_BACKOFF_SECONDS * attempt
-            logging.warning("Fetch failed for %s: %s. Retrying in %ds", pair_config.pair, exc, sleep_seconds)
+            logging.warning(
+                "Fetch failed for %s: %s. Retrying in %ds",
+                pair_config.pair,
+                exc,
+                sleep_seconds,
+            )
             time.sleep(sleep_seconds)
 
     raise RuntimeError(f"Unreachable: fetch loop did not return for {pair_config.pair}")
