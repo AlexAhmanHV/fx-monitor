@@ -38,6 +38,15 @@ describe('filterSeriesByRange', () => {
     expect(filtered[0].date).toBe('2024-01-10');
     expect(filtered[filtered.length - 1].date).toBe('2024-02-09');
   });
+
+  it('keeps only points within the last 90 or 365 days of a longer series', () => {
+    const series400 = makeDailySeries(400, '2023-01-01', (i) => i + 1);
+    const filtered90 = filterSeriesByRange(series400, '90D');
+    expect(filtered90).toHaveLength(91);
+
+    const filtered365 = filterSeriesByRange(series400, '365D');
+    expect(filtered365).toHaveLength(366);
+  });
 });
 
 describe('calculateKpis', () => {
@@ -80,5 +89,22 @@ describe('calculateKpis', () => {
     expect(result.vol30LogReturnPct).toBeCloseTo(0.0628994, 6);
     expect(result.min).toBe(100);
     expect(result.max).toBe(134);
+  });
+
+  it('finds the nearest earlier point across a banking-day gap for change1d', () => {
+    const series: FxPoint[] = [
+      { date: '2024-01-05', rate: 10 },
+      { date: '2024-01-08', rate: 12 },
+    ];
+    const result = calculateKpis(series, series);
+
+    expect(result.latest).toBe(12);
+    expect(result.change1d).toBeCloseTo(20, 6);
+    expect(result.change1w).toBeNull();
+    expect(result.change1m).toBeNull();
+    expect(result.ma30).toBeCloseTo(11, 6);
+    expect(result.vol30LogReturnPct).toBe(0);
+    expect(result.min).toBe(10);
+    expect(result.max).toBe(12);
   });
 });

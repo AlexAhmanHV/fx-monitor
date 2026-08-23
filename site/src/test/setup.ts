@@ -26,8 +26,10 @@ const localStorageMock: Storage = {
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
   writable: true,
+  configurable: true,
 });
 
 afterEach(() => {
   cleanup();
+  localStorageMock.clear();
 });

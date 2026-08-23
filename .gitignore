@@ -1,6 +1,7 @@
 node_modules/
 site/node_modules/
 site/dist/
+site/coverage/
 __pycache__/
 *.pyc
 .pytest_cache/
