@@ -76,7 +76,8 @@ export default function App() {
 
   const t = translations[locale];
   const liveDemoUrl = import.meta.env.VITE_LIVE_DEMO_URL ?? window.location.origin;
-  const sourceCodeUrl = import.meta.env.VITE_SOURCE_CODE_URL ?? 'https://github.com/';
+  const sourceCodeUrl =
+    import.meta.env.VITE_SOURCE_CODE_URL ?? 'https://github.com/AlexAhmanHV/fx-monitor';
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
