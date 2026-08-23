@@ -1,9 +1,11 @@
+import { afterEach } from 'vitest';
+import { cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
 
-// Ensure localStorage is available in jsdom environment
 const storage: Record<string, string> = {};
-const localStorageMock = {
-  getItem: (key: string) => storage[key] || null,
+
+const localStorageMock: Storage = {
+  getItem: (key: string) => (key in storage ? storage[key] : null),
   setItem: (key: string, value: string) => {
     storage[key] = value;
   },
@@ -15,11 +17,17 @@ const localStorageMock = {
       delete storage[key];
     });
   },
-  length: 0,
-  key: (index: number) => Object.keys(storage)[index] || null,
+  key: (index: number) => Object.keys(storage)[index] ?? null,
+  get length() {
+    return Object.keys(storage).length;
+  },
 };
 
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
   writable: true,
+});
+
+afterEach(() => {
+  cleanup();
 });

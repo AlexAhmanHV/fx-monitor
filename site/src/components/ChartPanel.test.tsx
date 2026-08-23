@@ -1,5 +1,5 @@
-import { cleanup, render, screen } from '@testing-library/react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 import ChartPanel from './ChartPanel';
 
 vi.mock('react-chartjs-2', () => ({
@@ -16,9 +16,6 @@ function getChartProps() {
 const labels = { rateHistory: 'Rate history', relativePerformance: 'Relative performance' };
 
 describe('ChartPanel', () => {
-  afterEach(() => {
-    cleanup();
-  });
   it('renders raw rates for a single series when not normalized', () => {
     render(
       <ChartPanel
