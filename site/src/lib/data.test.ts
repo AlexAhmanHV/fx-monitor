@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { fetchManifest, fetchSeries } from './data';
+import { fetchManifest, fetchSeries, fetchStatus } from './data';
 
 function mockFetchOnce(response: { ok: boolean; status?: number; json: () => Promise<unknown> }) {
   vi.stubGlobal('fetch', vi.fn().mockResolvedValue(response));
@@ -69,5 +69,40 @@ describe('fetchSeries', () => {
     await expect(fetchSeries('fx_EURSEK.json')).rejects.toThrow(
       'Data file contains invalid series points.',
     );
+  });
+});
+
+describe('fetchStatus', () => {
+  it('resolves with a valid status payload', async () => {
+    const payload = {
+      generated_utc: '2024-01-01T00:00:00Z',
+      status: 'ok',
+      pairs: [{ pair: 'EUR/SEK', status: 'ok', points: 100 }],
+    };
+    mockFetchOnce({ ok: true, json: () => Promise.resolve(payload) });
+    await expect(fetchStatus()).resolves.toEqual(payload);
+  });
+
+  it('resolves with null when the HTTP response is not ok', async () => {
+    mockFetchOnce({ ok: false, status: 404, json: () => Promise.resolve({}) });
+    await expect(fetchStatus()).resolves.toBeNull();
+  });
+
+  it('resolves with null when the payload has an invalid status value', async () => {
+    mockFetchOnce({ ok: true, json: () => Promise.resolve({ status: 'weird', pairs: [] }) });
+    await expect(fetchStatus()).resolves.toBeNull();
+  });
+
+  it('resolves with null when a pair entry has an invalid shape', async () => {
+    mockFetchOnce({
+      ok: true,
+      json: () => Promise.resolve({ status: 'ok', pairs: [{ pair: 'EUR/SEK' }] }),
+    });
+    await expect(fetchStatus()).resolves.toBeNull();
+  });
+
+  it('resolves with null when fetch itself rejects', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network down')));
+    await expect(fetchStatus()).resolves.toBeNull();
   });
 });

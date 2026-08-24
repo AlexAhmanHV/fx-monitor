@@ -1,4 +1,4 @@
-import type { FxSeriesFile, ManifestFile } from '../types';
+import type { FxSeriesFile, ManifestFile, PairStatus, PipelineStatus } from '../types';
 
 function isValidSeriesPoint(value: unknown): value is { date: string; rate: number } {
   if (!value || typeof value !== 'object') return false;
@@ -36,6 +36,26 @@ function assertSeriesFile(json: unknown): asserts json is FxSeriesFile {
   }
 }
 
+function isValidPairStatus(value: unknown): value is PairStatus {
+  if (!value || typeof value !== 'object') return false;
+  const item = value as Record<string, unknown>;
+  if (typeof item.pair !== 'string') return false;
+  if (item.status === 'ok') return typeof item.points === 'number';
+  if (item.status === 'error') return typeof item.message === 'string';
+  return false;
+}
+
+function assertPipelineStatus(json: unknown): asserts json is PipelineStatus {
+  if (!json || typeof json !== 'object') throw new Error('Invalid status payload.');
+  const payload = json as Record<string, unknown>;
+  if (payload.status !== 'ok' && payload.status !== 'partial' && payload.status !== 'failed') {
+    throw new Error('Status payload has an invalid status value.');
+  }
+  if (!Array.isArray(payload.pairs) || !payload.pairs.every(isValidPairStatus)) {
+    throw new Error('Status payload has an invalid pairs array.');
+  }
+}
+
 export async function fetchManifest(): Promise<ManifestFile> {
   const res = await fetch('/data/manifest.json', { cache: 'force-cache' });
   if (!res.ok) throw new Error(`Could not load manifest (${res.status}).`);
@@ -50,4 +70,16 @@ export async function fetchSeries(fileName: string): Promise<FxSeriesFile> {
   const json = (await res.json()) as unknown;
   assertSeriesFile(json);
   return json;
+}
+
+export async function fetchStatus(): Promise<PipelineStatus | null> {
+  try {
+    const res = await fetch('/data/status.json', { cache: 'force-cache' });
+    if (!res.ok) return null;
+    const json = (await res.json()) as unknown;
+    assertPipelineStatus(json);
+    return json;
+  } catch {
+    return null;
+  }
 }

@@ -54,3 +54,13 @@ export type ManifestFile = {
 };
 
 export type RangeOption = '30D' | '90D' | '365D' | 'ALL';
+
+export type PairStatus =
+  | { pair: string; status: 'ok'; points: number }
+  | { pair: string; status: 'error'; message: string };
+
+export type PipelineStatus = {
+  generated_utc: string;
+  status: 'ok' | 'partial' | 'failed';
+  pairs: PairStatus[];
+};
