@@ -41,10 +41,13 @@ jobs:
           python -m pytest pipeline/tests
 
       - name: Fetch latest ECB FX data
+        id: fetch
+        continue-on-error: true
         run: |
           python pipeline/fetch_fx.py --output-dir site/public/data --start-period 2015-01-01
 
       - name: Commit and push if data changed
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -55,3 +58,9 @@ jobs:
             git commit -m "chore(data): update ECB FX data"
             git push
           fi
+
+      - name: Fail the run if the fetch step failed
+        if: steps.fetch.outcome == 'failure'
+        run: |
+          echo "Data fetch failed or partially failed — see the 'Fetch latest ECB FX data' step above."
+          exit 1
