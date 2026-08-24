@@ -38,6 +38,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
+
   pipeline:
     runs-on: ubuntu-latest
     steps:
@@ -59,3 +62,6 @@ jobs:
 
       - name: Test
         run: python -m pytest pipeline/tests
+
+      - name: Audit dependencies
+        run: pip-audit -r pipeline/requirements.txt
