@@ -134,6 +134,22 @@ def validate_series(series: list[dict[str, Any]], pair: str) -> None:
             raise ValueError(f"Invalid rate in {pair}: {rate!r}")
 
 
+def build_status_payload(pair_results: list[dict[str, Any]], generated_utc: str) -> dict[str, Any]:
+    statuses = {result["status"] for result in pair_results}
+    if statuses <= {"ok"}:
+        overall = "ok"
+    elif "ok" in statuses:
+        overall = "partial"
+    else:
+        overall = "failed"
+
+    return {
+        "generated_utc": generated_utc,
+        "status": overall,
+        "pairs": pair_results,
+    }
+
+
 def write_json(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -149,20 +165,35 @@ def main() -> int:
     output_dir = Path(args.output_dir)
     generated_utc = datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
+    pair_results: list[dict[str, Any]] = []
+
     with requests.Session() as client:
         for pair_config in PAIR_CONFIGS:
-            rows = fetch_csv_rows(client, pair_config, args.start_period)
-            series = parse_series(rows, pair_config.pair)
-            validate_series(series, pair_config.pair)
+            try:
+                rows = fetch_csv_rows(client, pair_config, args.start_period)
+                series = parse_series(rows, pair_config.pair)
+                validate_series(series, pair_config.pair)
 
-            payload = {
-                "pair": pair_config.pair,
-                "source": "ECB",
-                "generated_utc": generated_utc,
-                "series": series,
-            }
-            write_json(output_dir / pair_config.file_name, payload)
-            logging.info("Wrote %s (%d points)", pair_config.file_name, len(series))
+                payload = {
+                    "pair": pair_config.pair,
+                    "source": "ECB",
+                    "generated_utc": generated_utc,
+                    "series": series,
+                }
+                write_json(output_dir / pair_config.file_name, payload)
+                logging.info("Wrote %s (%d points)", pair_config.file_name, len(series))
+                pair_results.append(
+                    {"pair": pair_config.pair, "status": "ok", "points": len(series)}
+                )
+            except Exception as exc:
+                logging.error("Failed to update %s: %s", pair_config.pair, exc)
+                pair_results.append(
+                    {"pair": pair_config.pair, "status": "error", "message": str(exc)}
+                )
+
+    status_payload = build_status_payload(pair_results, generated_utc)
+    write_json(output_dir / "status.json", status_payload)
+    logging.info("Wrote status.json (overall status: %s)", status_payload["status"])
 
     manifest_payload = {
         "source": "ECB",
@@ -178,7 +209,8 @@ def main() -> int:
     }
     write_json(output_dir / "manifest.json", manifest_payload)
     logging.info("Wrote manifest.json")
-    return 0
+
+    return 0 if status_payload["status"] == "ok" else 1
 
 
 if __name__ == "__main__":
