@@ -38,7 +38,7 @@ A statically-served fintech dashboard that visualizes ECB reference exchange rat
 | Frontend framework | React 18 + TypeScript (strict), Vite |
 | Charts | Chart.js via `react-chartjs-2` |
 | Testing | Vitest, React Testing Library, jsdom |
-| CI | GitHub Actions — lint + typecheck + test + build on every PR/push, plus a daily data-refresh cron |
+| CI | GitHub Actions — lint + typecheck + test + build + dependency audit on every PR/push, CodeQL + Dependabot for ongoing security, plus a daily data-refresh cron |
 | Deployment | Render (Static Site) |
 
 ---
@@ -124,6 +124,8 @@ npm run test:coverage  # coverage report (informational, not gated)
 
 `.github/workflows/ci.yml` runs on every pull request and push to `main`: lint + typecheck + test + build for the frontend, and `ruff` + `pytest` for the pipeline. `.github/workflows/update-data.yml` is separate — it's the daily cron that actually refreshes the ECB data and auto-deploys via Render.
 
+`ci.yml` also gates on dependency vulnerabilities: `npm audit --audit-level=high` for the frontend, `pip-audit` for the pipeline. On top of that, `.github/workflows/codeql.yml` runs GitHub CodeQL static analysis (JavaScript/TypeScript and Python) on every push/PR plus a weekly schedule, and `.github/dependabot.yml` opens a PR whenever an npm, pip, or GitHub Actions dependency has an update. See [SECURITY.md](SECURITY.md) for how to report a vulnerability.
+
 ---
 
 ## Data source
@@ -163,6 +165,8 @@ The daily data-refresh workflow (`update-data.yml`) commits updated JSON straigh
 **A real, verified test suite** — every numeric assertion in the test suite (KPI math, volatility, drawdown, histogram binning, regime-band boundaries) was independently computed and checked against the actual source logic before being written, not just asserted against whatever the code happened to output.
 
 **CI that gates the actual deliverable** — lint, typecheck, test, and build all run on every PR/push, separate from and non-interfering with the daily data-refresh cron.
+
+**Security hygiene, not just feature work** — dependency vulnerabilities gate CI (`npm audit`, `pip-audit`), Dependabot keeps three ecosystems current on a weekly cadence, and CodeQL statically analyzes both languages on every push and weekly on a schedule.
 
 ---
 
