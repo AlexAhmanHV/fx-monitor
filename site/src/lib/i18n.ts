@@ -41,6 +41,9 @@ export type Translation = {
   liveDemo: string;
   sourceCodeCta: string;
   createdBy: string;
+  statusOk: string;
+  statusPartial: string;
+  statusFailed: string;
 };
 
 export const translations: Record<Locale, Translation> = {
@@ -86,6 +89,9 @@ export const translations: Record<Locale, Translation> = {
     liveDemo: 'Live demo',
     sourceCodeCta: 'Source code',
     createdBy: 'Created by',
+    statusOk: 'Data pipeline healthy',
+    statusPartial: 'Data pipeline partially failed',
+    statusFailed: 'Data pipeline failed',
   },
   sv: {
     projectPage: 'Projektsida',
@@ -129,5 +135,8 @@ export const translations: Record<Locale, Translation> = {
     liveDemo: 'Live demo',
     sourceCodeCta: 'K\u00E4llkod',
     createdBy: 'Skapad av',
+    statusOk: 'Datapipeline OK',
+    statusPartial: 'Datapipeline delvis fel',
+    statusFailed: 'Datapipeline fel',
   },
 };

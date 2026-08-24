@@ -5,6 +5,7 @@ import KpiCard from './components/KpiCard';
 import ReturnsHistogramChart from './components/ReturnsHistogramChart';
 import RollingVolChart from './components/RollingVolChart';
 import SnapshotPanel from './components/SnapshotPanel';
+import StatusBadge from './components/StatusBadge';
 import {
   buildDrawdownSeries,
   buildEventMarkers,
@@ -14,10 +15,10 @@ import {
   buildVolatilityRegimeBands,
 } from './lib/analytics';
 import { calculateKpis, filterSeriesByRange } from './lib/calc';
-import { fetchManifest, fetchSeries } from './lib/data';
+import { fetchManifest, fetchSeries, fetchStatus } from './lib/data';
 import { formatDate, formatPct, formatRate, formatUtc } from './lib/format';
 import { translations, type Locale } from './lib/i18n';
-import type { FxSeriesFile, ManifestFile, RangeOption } from './types';
+import type { FxSeriesFile, ManifestFile, PipelineStatus, RangeOption } from './types';
 
 type Theme = 'dark' | 'light';
 
@@ -73,6 +74,7 @@ export default function App() {
   const [range, setRange] = useState<RangeOption>('90D');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<PipelineStatus | null>(null);
 
   const t = translations[locale];
   const liveDemoUrl = import.meta.env.VITE_LIVE_DEMO_URL ?? window.location.origin;
@@ -88,6 +90,10 @@ export default function App() {
     localStorage.setItem('fx_monitor_locale', locale);
     document.documentElement.lang = locale;
   }, [locale]);
+
+  useEffect(() => {
+    void fetchStatus().then(setStatus);
+  }, []);
 
   useEffect(() => {
     const loadManifest = async () => {
@@ -416,6 +422,10 @@ export default function App() {
 
       <footer className="footer">
         <span>{t.lastUpdated}: {formatUtc(primarySeriesFile.generated_utc)}</span>
+        <StatusBadge
+          status={status}
+          labels={{ ok: t.statusOk, partial: t.statusPartial, failed: t.statusFailed }}
+        />
         <span>
           {t.source}:{' '}
           <a href="https://data.ecb.europa.eu" target="_blank" rel="noreferrer">

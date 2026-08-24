@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import App from './App';
-import { fetchManifest, fetchSeries } from './lib/data';
+import { fetchManifest, fetchSeries, fetchStatus } from './lib/data';
+import type { PipelineStatus } from './types';
 
 vi.mock('./lib/data');
 vi.mock('./components/ChartPanel', () => ({ default: () => <div data-testid="chart-panel" /> }));
@@ -31,11 +32,18 @@ const seriesFile = {
   ],
 };
 
+const statusPayload: PipelineStatus = {
+  generated_utc: '2024-01-01T00:00:00Z',
+  status: 'ok',
+  pairs: [{ pair: 'EUR/SEK', status: 'ok', points: 2 }],
+};
+
 beforeEach(() => {
   localStorage.clear();
   window.history.replaceState({}, '', '/');
   vi.mocked(fetchManifest).mockResolvedValue(manifest);
   vi.mocked(fetchSeries).mockResolvedValue(seriesFile);
+  vi.mocked(fetchStatus).mockResolvedValue(statusPayload);
 });
 
 describe('App', () => {
@@ -49,6 +57,7 @@ describe('App', () => {
     expect(screen.getByTestId('returns-histogram-chart')).toBeInTheDocument();
     // 'EUR/SEK' also appears in the pair <option>, so scope to the KPI hint specifically.
     expect(screen.getByText('EUR/SEK', { selector: '.kpi-hint' })).toBeInTheDocument();
+    expect(await screen.findByTestId('status-badge')).toHaveTextContent('Data pipeline healthy');
   });
 
   it('shows an error state when the manifest fails to load', async () => {
