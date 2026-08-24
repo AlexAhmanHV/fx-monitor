@@ -344,6 +344,32 @@ select {
   color: var(--accent);
 }
 
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 0.35rem;
+  vertical-align: middle;
+}
+
+.status-dot[data-status='ok'] {
+  background-color: #2e9f7d;
+}
+
+.status-dot[data-status='partial'] {
+  background-color: #c48f1d;
+}
+
+.status-dot[data-status='failed'] {
+  background-color: #dc5f4b;
+}
+
 .state {
   text-align: center;
   margin-top: 3rem;
