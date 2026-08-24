@@ -27,6 +27,7 @@ A statically-served fintech dashboard that visualizes ECB reference exchange rat
 - **Date ranges** — 30D / 90D / 365D / All, with shareable URL state (`pair`, `range`, `mode`, `compare` query params).
 - **Bilingual UI** — Swedish/English toggle, plus a dark/light theme switcher with the preference saved in the browser.
 - **Fully static** — the frontend only ever reads JSON files; there is no API server or database to operate.
+- **Pipeline health badge** — a small footer indicator shows whether the last data refresh fully succeeded, partially failed, or failed outright, with the affected pairs listed on hover.
 
 ---
 
