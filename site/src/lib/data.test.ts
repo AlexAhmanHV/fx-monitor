@@ -89,14 +89,23 @@ describe('fetchStatus', () => {
   });
 
   it('resolves with null when the payload has an invalid status value', async () => {
-    mockFetchOnce({ ok: true, json: () => Promise.resolve({ status: 'weird', pairs: [] }) });
+    mockFetchOnce({
+      ok: true,
+      json: () =>
+        Promise.resolve({ generated_utc: '2024-01-01T00:00:00Z', status: 'weird', pairs: [] }),
+    });
     await expect(fetchStatus()).resolves.toBeNull();
   });
 
   it('resolves with null when a pair entry has an invalid shape', async () => {
     mockFetchOnce({
       ok: true,
-      json: () => Promise.resolve({ status: 'ok', pairs: [{ pair: 'EUR/SEK' }] }),
+      json: () =>
+        Promise.resolve({
+          generated_utc: '2024-01-01T00:00:00Z',
+          status: 'ok',
+          pairs: [{ pair: 'EUR/SEK' }],
+        }),
     });
     await expect(fetchStatus()).resolves.toBeNull();
   });
