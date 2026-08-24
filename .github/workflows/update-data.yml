@@ -47,7 +47,7 @@ jobs:
           python pipeline/fetch_fx.py --output-dir site/public/data --start-period 2015-01-01
 
       - name: Commit and push if data changed
-        if: always()
+        if: ${{ !cancelled() }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

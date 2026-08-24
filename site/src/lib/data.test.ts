@@ -101,6 +101,14 @@ describe('fetchStatus', () => {
     await expect(fetchStatus()).resolves.toBeNull();
   });
 
+  it('resolves with null when the payload is missing generated_utc', async () => {
+    mockFetchOnce({
+      ok: true,
+      json: () => Promise.resolve({ status: 'ok', pairs: [] }),
+    });
+    await expect(fetchStatus()).resolves.toBeNull();
+  });
+
   it('resolves with null when fetch itself rejects', async () => {
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network down')));
     await expect(fetchStatus()).resolves.toBeNull();

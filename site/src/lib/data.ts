@@ -48,6 +48,9 @@ function isValidPairStatus(value: unknown): value is PairStatus {
 function assertPipelineStatus(json: unknown): asserts json is PipelineStatus {
   if (!json || typeof json !== 'object') throw new Error('Invalid status payload.');
   const payload = json as Record<string, unknown>;
+  if (typeof payload.generated_utc !== 'string') {
+    throw new Error('Status payload has an invalid generated_utc.');
+  }
   if (payload.status !== 'ok' && payload.status !== 'partial' && payload.status !== 'failed') {
     throw new Error('Status payload has an invalid status value.');
   }
@@ -74,7 +77,7 @@ export async function fetchSeries(fileName: string): Promise<FxSeriesFile> {
 
 export async function fetchStatus(): Promise<PipelineStatus | null> {
   try {
-    const res = await fetch('/data/status.json', { cache: 'force-cache' });
+    const res = await fetch('/data/status.json', { cache: 'no-cache' });
     if (!res.ok) return null;
     const json = (await res.json()) as unknown;
     assertPipelineStatus(json);

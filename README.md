@@ -113,7 +113,7 @@ npm run preview
 
 ## Testing & CI
 
-The frontend has 57 tests (Vitest + React Testing Library) covering every function in `lib/` — KPI math, volatility/drawdown/histogram calculations, regime-band grouping, formatting, and data validation — plus every component, including the four Chart.js-backed ones (tested by mocking `react-chartjs-2`'s exports rather than polyfilling a canvas, since the goal is verifying *this app's* data transformations, not re-testing Chart.js itself).
+The frontend has 67 tests (Vitest + React Testing Library) covering every function in `lib/` — KPI math, volatility/drawdown/histogram calculations, regime-band grouping, formatting, and data validation — plus every component, including the four Chart.js-backed ones (tested by mocking `react-chartjs-2`'s exports rather than polyfilling a canvas, since the goal is verifying *this app's* data transformations, not re-testing Chart.js itself).
 
 ```bash
 cd site
@@ -123,6 +123,8 @@ npm run test:coverage  # coverage report (informational, not gated)
 ```
 
 `.github/workflows/ci.yml` runs on every pull request and push to `main`: lint + typecheck + test + build for the frontend, and `ruff` + `pytest` for the pipeline. `.github/workflows/update-data.yml` is separate — it's the daily cron that actually refreshes the ECB data and auto-deploys via Render.
+
+The pipeline isolates failures per currency pair: if one pair's fetch fails, the run logs the error and moves on rather than aborting — the other pairs still get fresh data, and the failing pair simply keeps its last-good file until the next successful run. Every run also writes a `status.json` summarizing the outcome per pair, and the live site's footer shows a small badge reflecting that status, so pipeline health is visible on the site itself, not just buried in Actions logs.
 
 `ci.yml` also gates on dependency vulnerabilities: `npm audit --audit-level=high` for the frontend, `pip-audit` for the pipeline. On top of that, `.github/workflows/codeql.yml` runs GitHub CodeQL static analysis (JavaScript/TypeScript and Python) on every push/PR plus a weekly schedule, and `.github/dependabot.yml` opens a PR whenever an npm, pip, or GitHub Actions dependency has an update. See [SECURITY.md](SECURITY.md) for how to report a vulnerability.
 
@@ -167,6 +169,8 @@ The daily data-refresh workflow (`update-data.yml`) commits updated JSON straigh
 **CI that gates the actual deliverable** — lint, typecheck, test, and build all run on every PR/push, separate from and non-interfering with the daily data-refresh cron.
 
 **Security hygiene, not just feature work** — dependency vulnerabilities gate CI (`npm audit`, `pip-audit`), Dependabot keeps three ecosystems current on a weekly cadence, and CodeQL statically analyzes both languages on every push and weekly on a schedule.
+
+**Graceful degradation over all-or-nothing failure** — a single pair's fetch error doesn't take down the whole daily run; the pipeline isolates it, keeps serving that pair's last-good data, and reports the outcome via `status.json`, which the frontend turns into a visible health badge.
 
 ---
 
