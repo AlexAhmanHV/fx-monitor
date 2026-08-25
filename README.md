@@ -6,13 +6,13 @@ A statically-served fintech dashboard that visualizes ECB reference exchange rat
 
 ---
 
-## Screenshot
+## Screenshots
 
-![FX Monitor project preview card](site/public/og-cover.svg)
+<img src="docs/screenshots/dashboard.png" width="700" alt="Dashboard: rate history chart, KPI cards, and market snapshot for EUR/SEK" />
 
-> The image above is the site's social-preview card, not a literal screenshot. Open the [live demo](https://fx-monitor-tlpr.onrender.com) to see the actual dashboard — interactive charts, comparison mode, and dark/light theme.
->
-> _Real screenshots (desktop + mobile + comparison mode) TODO — add before the next portfolio pass._
+<img src="docs/screenshots/comparison-mode.png" width="700" alt="Comparison mode overlaying EUR/SEK, EUR/USD, and EUR/GBP normalized to an index-100 base" />
+
+<img src="docs/screenshots/light-theme.png" width="700" alt="The same dashboard in light theme" />
 
 ---
 
