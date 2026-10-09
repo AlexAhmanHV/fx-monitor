@@ -18,6 +18,10 @@ describe('formatPct', () => {
   it('does not add a sign for negative values (toFixed already includes the minus)', () => {
     expect(formatPct(-3.456)).toBe('-3.46%');
   });
+
+  it('omits the plus sign when signed is false (for magnitudes like volatility)', () => {
+    expect(formatPct(0.2412, false)).toBe('0.24%');
+  });
 });
 
 describe('formatRate', () => {

@@ -114,7 +114,7 @@ npm run preview
 
 ## Testing & CI
 
-The frontend has 67 tests (Vitest + React Testing Library) covering every function in `lib/` — KPI math, volatility/drawdown/histogram calculations, regime-band grouping, formatting, and data validation — plus every component, including the four Chart.js-backed ones (tested by mocking `react-chartjs-2`'s exports rather than polyfilling a canvas, since the goal is verifying *this app's* data transformations, not re-testing Chart.js itself).
+The frontend has 68 tests (Vitest + React Testing Library) covering every function in `lib/` — KPI math, volatility/drawdown/histogram calculations, regime-band grouping, formatting, and data validation — plus every component, including the four Chart.js-backed ones (tested by mocking `react-chartjs-2`'s exports rather than polyfilling a canvas, since the goal is verifying *this app's* data transformations, not re-testing Chart.js itself).
 
 ```bash
 cd site

@@ -1,8 +1,8 @@
-export function formatPct(value: number | null): string {
+export function formatPct(value: number | null, signed = true): string {
   if (value === null || Number.isNaN(value)) {
     return 'N/A';
   }
-  const sign = value >= 0 ? '+' : '';
+  const sign = signed && value >= 0 ? '+' : '';
   return `${sign}${value.toFixed(2)}%`;
 }
 

@@ -388,7 +388,7 @@ export default function App() {
         <KpiCard label="1W" value={formatPct(kpis.change1w)} hint={t.pctChange} />
         <KpiCard label="1M" value={formatPct(kpis.change1m)} hint={t.pctChange} />
         <KpiCard label={t.ma30} value={formatRate(kpis.ma30)} hint={t.ma30Hint} />
-        <KpiCard label={t.vol30} value={formatPct(kpis.vol30LogReturnPct)} hint={t.volHint} />
+        <KpiCard label={t.vol30} value={formatPct(kpis.vol30LogReturnPct, false)} hint={t.volHint} />
         <KpiCard label={t.min} value={formatRate(kpis.min)} hint={t.selectedRange} />
         <KpiCard label={t.max} value={formatRate(kpis.max)} hint={t.selectedRange} />
       </section>

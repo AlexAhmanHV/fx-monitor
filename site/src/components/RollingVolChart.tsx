@@ -56,7 +56,7 @@ export default function RollingVolChart({ data, title }: RollingVolChartProps) {
         grid: { color: 'rgba(159, 180, 209, 0.1)' },
       },
       y: {
-        ticks: { color: '#9fb4d1', callback: (v: number | string) => `${Number(v).toFixed(2)}%` },
+        ticks: { color: '#9fb4d1', callback: (v: number | string) => `${Number(v).toFixed(3)}%` },
         grid: { color: 'rgba(159, 180, 209, 0.1)' },
       },
     },
