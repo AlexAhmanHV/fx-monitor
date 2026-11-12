@@ -1,36 +1,36 @@
 {
-  "generated_utc": "2026-11-11T11:59:11Z",
-  "status": "ok",
+  "generated_utc": "2026-11-12T13:00:39Z",
+  "status": "partial",
   "pairs": [
     {
       "pair": "EUR/SEK",
-      "status": "ok",
-      "points": 3036
+      "status": "error",
+      "message": "Failed to fetch EUR/SEK after 3 attempts"
     },
     {
       "pair": "EUR/USD",
       "status": "ok",
-      "points": 3036
+      "points": 3037
     },
     {
       "pair": "EUR/GBP",
-      "status": "ok",
-      "points": 3036
+      "status": "error",
+      "message": "Failed to fetch EUR/GBP after 3 attempts"
     },
     {
       "pair": "EUR/JPY",
-      "status": "ok",
-      "points": 3036
+      "status": "error",
+      "message": "Failed to fetch EUR/JPY after 3 attempts"
     },
     {
       "pair": "EUR/NOK",
-      "status": "ok",
-      "points": 3036
+      "status": "error",
+      "message": "Failed to fetch EUR/NOK after 3 attempts"
     },
     {
       "pair": "EUR/CHF",
       "status": "ok",
-      "points": 3036
+      "points": 3037
     }
   ]
 }
