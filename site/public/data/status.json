@@ -1,36 +1,36 @@
 {
-  "generated_utc": "2026-11-25T14:43:31Z",
+  "generated_utc": "2026-11-26T14:07:04Z",
   "status": "ok",
   "pairs": [
     {
       "pair": "EUR/SEK",
       "status": "ok",
-      "points": 3046
+      "points": 3047
     },
     {
       "pair": "EUR/USD",
       "status": "ok",
-      "points": 3046
+      "points": 3047
     },
     {
       "pair": "EUR/GBP",
       "status": "ok",
-      "points": 3046
+      "points": 3047
     },
     {
       "pair": "EUR/JPY",
       "status": "ok",
-      "points": 3046
+      "points": 3047
     },
     {
       "pair": "EUR/NOK",
       "status": "ok",
-      "points": 3046
+      "points": 3047
     },
     {
       "pair": "EUR/CHF",
       "status": "ok",
-      "points": 3046
+      "points": 3047
     }
   ]
 }
